@@ -3,6 +3,7 @@ import numpy as np
 
 pygame.init()
  
+ #Window
 WIDTH, HEIGHT = 600, 600
 BOARD_ROWS = 3
 BOARD_COLS = 3
@@ -60,6 +61,7 @@ def is_board_full():
     return True
 
 
+#Draw Circle and Cross
 def draw_figures():
     for row in range(BOARD_ROWS):
         for col in range(BOARD_COLS):
@@ -110,10 +112,8 @@ def check_win(player):
     if is_board_full() == True:
         reset()
 
-                
-    
 
-
+#Reset Board
 def reset():
     pygame.display.update()
     pygame.time.wait(500)
@@ -126,10 +126,7 @@ def reset():
     player = 1
 
 
-
-
-
-
+#Main Function
 def main():
 
     player = 1
@@ -163,16 +160,10 @@ def main():
                     draw_figures()
                     check_win(2)
                     player = 1
-
-
-
-
+                    
         drawing_lines()
 
-
-
         pygame.display.update()
-
 
 
 if __name__ == "__main__":
