@@ -74,26 +74,57 @@ def draw_figures():
                 pygame.draw.line(SCREEN, CROSS_WHITE, (col * 200 + SPACE, row * 200 + SPACE), (col * 200 + 200 - SPACE, row * 200 + 200 - SPACE), CROSS_WIDTH)
 
 
+#set player to colour
+def player_to_colour(player):
+    if player == 1:
+        return CIRCLE_BLACK
+    elif player == 2:
+        return CROSS_WHITE
+
+
 #Winning and Restart Function
 def check_win(player):
+    #Vertical
     for col in range(BOARD_COLS):
         if board[0][col] == player and board[1][col] == player and board[2][col] == player:
-            draw_vertical_winning_line()
+            pygame.draw.line(SCREEN, player_to_colour(player), (col * 200 + 100, 15), (col * 200 + 100, HEIGHT - 15), LINE_WIDTH)
+            reset()
 
-def draw_vertical_winning_line(col, player):
-    pass
+    #Horizontal
+    for row in range(BOARD_ROWS):
+        if board[row][0] == player and board[row][1] == player and board[row][2] == player:
+            pygame.draw.line(SCREEN, player_to_colour(player), (15, row * 200 + 100), (WIDTH - 15, row * 200 + 100), LINE_WIDTH)
+            reset()
 
-def draw_horizontal_winning_line(row, player):
-    pass
+    #Ascending Diagonal
+    if board[0][0] == player and board[1][1] == player and board[2][2] == player:
+        pygame.draw.line(SCREEN, player_to_colour(player), (15, 15), (WIDTH - 15, HEIGHT - 15), LINE_WIDTH)
+        reset()
 
-def draw_asc_diagonal(player):
-    pass
+    #Descending Diagonal
+    elif board[0][2] == player and board[1][1] == player and board[2][0] == player:
+        pygame.draw.line(SCREEN, player_to_colour(player), (15, HEIGHT - 15), (WIDTH - 15, 15), LINE_WIDTH)
+        reset()
 
-def draw_desc_diagonal(player):
-    pass
+    #draw
+    if is_board_full() == True:
+        reset()
 
-def restart():
-    pass
+                
+    
+
+
+def reset():
+    pygame.display.update()
+    pygame.time.wait(500)
+    for row in range(BOARD_ROWS):
+        for col in range(BOARD_COLS):
+            board[row][col] = 0
+
+    SCREEN.fill(BG_BEIGE)
+    drawing_lines()
+    player = 1
+
 
 
 
@@ -103,15 +134,14 @@ def main():
 
     player = 1
 
-    while True:
+    running = True
+    while running:
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
 
-
-       
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouseX = event.pos[0]
@@ -124,15 +154,16 @@ def main():
                 
                 if player == 1:
                     mark_square(clicked_row, clicked_col, player)
+                    draw_figures()
+                    check_win(1)
                     player = 2
-                    print(board)
 
                 elif player == 2:
                     mark_square(clicked_row, clicked_col, player)
+                    draw_figures()
+                    check_win(2)
                     player = 1
-                    print(board)
 
-                draw_figures()
 
 
 
